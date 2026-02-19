@@ -153,6 +153,7 @@ may be named with `tempel--name' or carry an evaluatable Lisp expression
   "<remap> <end-of-buffer>" #'tempel-end
   "<remap> <kill-sentence>" #'tempel-kill
   "<remap> <keyboard-escape-quit>" #'tempel-abort
+  "<remap> <keyboard-quit>" #'tempel-abort
   "<remap> <backward-paragraph>" #'tempel-previous
   "<remap> <forward-paragraph>" #'tempel-next
   ;; Use concrete keys because of org mode
