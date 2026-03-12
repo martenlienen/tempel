@@ -543,9 +543,11 @@ form (MODE COND . TEMPLATES)."
 (defun tempel-path-templates ()
   "Return templates defined in `tempel-path'.
 Additionally, save any files in `tempel-path' that have been modified
-since the last time this function was called.  This function can be used
-as source in `tempel-template-sources'."
+since the last time this function was called.
+
+This function can be used as a source in `tempel-template-sources'."
   (when (or (not tempel--path-templates) tempel-auto-reload)
+    (tempel--save)
     (let* ((files
             (cl-loop for path in (ensure-list tempel-path)
                      nconc (file-expand-wildcards path t)))
@@ -897,8 +899,6 @@ partial template names, see `tempel-complete'.  If INTERACTIVE is nil
 the function acts like a Capf, otherwise like an interactive completion
 command."
   (interactive (list t))
-  (when interactive
-    (tempel--save))
   (if-let* ((prefixes (tempel--prefixes))
             (templates (cl-loop for template in (tempel--templates)
                                 for name = (symbol-name (car template))
@@ -925,7 +925,6 @@ Capf, otherwise like an interactive completion command."
   (if interactive
       (let ((completion-at-point-functions (list #'tempel-complete))
             completion-cycle-threshold)
-        (tempel--save)
         (unless (completion-at-point)
           (user-error "tempel-complete: No matching templates")))
     (when-let* ((prefixes (tempel--prefixes))
