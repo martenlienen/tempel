@@ -585,6 +585,15 @@ TEMPLATES must be a list of elements of the form (MODES . TEMPLATES)."
             (eval cond 'lexical))))
     t))
 
+(defun tempel-reload ()
+  "Reload templates in all buffers.
+This is most useful if `tempel-auto-reload' is nil."
+  (interactive)
+  (setq tempel--path-templates nil)
+  (cl-loop for buffer being the buffers
+           do (with-current-buffer buffer
+                (kill-local-variable 'tempel--mode-templates))))
+
 (defun tempel--templates ()
   "Return templates for current mode."
   (when (or tempel-auto-reload (not tempel--mode-templates))
